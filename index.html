@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Bouncing Ball</title>
+	<style type="text/css">
+		body {
+			margin: 0;
+			background-color: white;
+		}
+		#my-canvas {
+			width: 100%;
+			height: 100%;
+		}
+		#myVideo {
+		  position: fixed;
+		  right: 0;
+		  bottom: 0;
+		  min-width: 100%;
+		  min-height: 100%;
+
+		}
+		.background-image {
+			/* z-index: -1;
+			position: relative; */
+			mix-blend-mode: lighten;
+			opacity: 60%;
+		  width: 120%;
+		  height: 120%;
+		  left: 0;
+		  top: 0;
+		  position: absolute;
+		  /* background: url('baseball2.jpg') no-repeat left center / cover; */
+		}
+	</style>
+</head>
+<body onload="init()">
+
+<div class="background-image"><video autoplay muted loop id="myVideo">
+<source src="baseball.mp4" type="video/mp4"></div>
+
+	<canvas id="my-canvas"></canvas>
+<script type="text/javascript">
+	//canvas properties
+
+	var canvas = document.getElementById("my-canvas");
+	var context = canvas.getContext("2d");
+
+	//animation things
+	var fps = 60;
+	var updateTime = 300 / fps; //originally 1000
+	//easy variables for easy coding life
+	var _PI = Math.PI;
+	var _sin = Math.sin;
+	var _cos = Math.cos;
+	var _random = Math.random;
+	var oneDegreeOnRadian = _PI / 180;
+	// ball
+	var ball;
+	var ball1;
+	var ball2;
+	var ball3;
+	var ball4;
+	var ball5;
+	var ball6;
+	var ball7;
+	var ball8;
+	var ball9;
+	var ball10;
+	//Our bouncing ball class
+	function Ball(radius, speed) {
+		this.radius = (radius) ? (radius) : (20); // ball size
+		this.speed = (speed) ? (speed) : (10); // ball speed
+		this.x = (_random() * (canvas.width - (2 * this.radius))) + this.radius; // random horizontal position
+		this.y = (_random() * (canvas.height - (2 * this.radius))) + this.radius; // random vertical position
+
+		var angleRadian = _random() * 360 * oneDegreeOnRadian; // random move direction
+
+		this.xSpeed = _cos(angleRadian) * this.speed; // translate speed on x axis
+		this.ySpeed = _sin(angleRadian) * this.speed; // translate speed on y axis
+
+		this.xDirection = (_random < 0.5) ? (1) : (-1); // random first x direction
+		this.yDirection = (_random < 0.5) ? (1) : (-1); // random first x direction
+
+		this.move = function() {
+			var nextX = this.x + (this.xDirection * this.xSpeed); // predict next x position
+			var nextY = this.y + (this.yDirection * this.ySpeed); // predict next y position
+
+			if(((nextX - this.radius) < 0) || ((nextX + this.radius) > canvas.width - 1)) { // if collide with left/right screen
+				this.xDirection *= -1; // change x direction
+			}
+			if(((nextY - this.radius) < 0) || ((nextY + this.radius) > canvas.height - 1)) { // if collide with top/bottom screen
+				this.yDirection *= -1; // change y direction
+			}
+
+			this.x += this.xDirection * this.xSpeed; // update x
+			this.y += this.yDirection * this.ySpeed; // update y
+		}
+
+		this.draw = function() {
+			context.fillStyle = "white"; // ball color
+			context.beginPath();
+			context.arc(this.x, this.y, this.radius, 0, _PI * 2, false); // draw circle
+			context.closePath();
+			context.fill(); // draw ball on canvas
+		}
+	}
+
+	function clear() {
+		context.clearRect(0, 0, canvas.width, canvas.height); // clear canvas
+	}
+	function update() {
+		ball.move(); // move ball
+		ball1.move();
+		ball2.move();
+		ball3.move();
+		ball4.move();
+		ball5.move();
+		ball6.move();
+		ball7.move();
+		ball8.move();
+		ball9.move();
+		ball10.move();
+	}
+	function draw() {
+		ball.draw();
+		ball1.draw();
+		ball2.draw();
+		ball3.draw();
+		ball4.draw();
+		ball5.draw();
+		ball6.draw();
+		ball7.draw();
+		ball8.draw();
+		ball9.draw();
+		ball10.draw();
+	}
+	function animate() {
+		clear();
+		update();
+		draw();
+	}
+	// update canvas size when resizing window
+	function resizeCanvas() {
+		canvas.width = window.innerWidth;
+		canvas.height = window.innerHeight;
+	}
+
+	//initialize canvas
+	function init() {
+		window.addEventListener('resize', resizeCanvas, false);
+		resizeCanvas();
+		ball = new Ball(20, 11);
+		ball1 = new Ball(15,11);
+		ball2 = new Ball(20,11);
+		ball3 = new Ball(15,11);
+		ball4 = new Ball(25,11);
+		ball5 = new Ball(15,11);
+		ball6 = new Ball(25,11);
+		ball7 = new Ball(15,11);
+		ball8 = new Ball(20,11);
+		ball9 = new Ball(15,11);
+		ball10 = new Ball(15,11);
+		//run animation
+		setInterval(function() {
+			animate();
+		}, updateTime);
+	}
+</script>
+<script>
+const bg = document.querySelector('.background-image');
+const windowWidth = window.innerWidth / 15;
+const windowHeight = window.innerHeight / 15 ;
+
+bg.addEventListener('mousemove', (e) => {
+  const mouseX = e.clientX / windowWidth;
+  const mouseY = e.clientY / windowHeight;
+
+  bg.style.transform = `translate3d(-${mouseX}%, -${mouseY}%, 0)`;
+});
+</script>
+
+</body>
+</html>
